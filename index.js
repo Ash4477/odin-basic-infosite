@@ -34,7 +34,7 @@ app.get("/contact-me", (req, res) => {
     }
   });
 });
-app.get(/.*/, (req, res) => {
+app.get("/{*splat}", (req, res) => {
   const filePath = path.join(__dirname, "pages", "404.html");
   res.status(404).sendFile(filePath, (err) => {
     if (err) {
