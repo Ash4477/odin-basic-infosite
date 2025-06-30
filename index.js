@@ -1,35 +1,48 @@
-import http from "http";
-import fs from "fs";
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const server = http.createServer((req, res) => {
-  let filePath;
+const app = express();
 
-  if (req.url === "/") {
-    filePath = "./pages/index.html";
-  } else if (req.url == "/contact-me") {
-    filePath = "./pages/contact-me.html";
-  } else if (req.url == "/about") {
-    filePath = "./pages/about.html";
-  } else {
-    filePath = "./pages/404.html";
-  }
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-  fs.readFile(filePath, "utf-8", (err, data) => {
+console.log(__filename);
+console.log(__dirname);
+
+app.get("/", (req, res) => {
+  const filePath = path.join(__dirname, "pages", "index.html");
+  res.sendFile(filePath, (err) => {
     if (err) {
-      res.writeHead(500, { "Content-Type": "text/plain" });
-      return res.end("Something went wrong :<");
+      res.status(500).json({ msg: "error occurred!" });
     }
-
-    if (filePath === "./pages/404.html") {
-      res.writeHead(404, { "Content-Type": "text/html" });
-      return res.end(data);
+  });
+});
+app.get("/about", (req, res) => {
+  const filePath = path.join(__dirname, "pages", "about.html");
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      res.status(500).json({ msg: "error occurred!" });
     }
-
-    res.writeHead(200, { "Content-Type": "text/html" });
-    res.end(data);
+  });
+});
+app.get("/contact-me", (req, res) => {
+  const filePath = path.join(__dirname, "pages", "contact-me.html");
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      res.status(500).json({ msg: "error occurred!" });
+    }
+  });
+});
+app.get(/.*/, (req, res) => {
+  const filePath = path.join(__dirname, "pages", "404.html");
+  res.status(404).sendFile(filePath, (err) => {
+    if (err) {
+      res.status(500).json({ msg: "error occurred!" });
+    }
   });
 });
 
-server.listen(3000, () => {
+app.listen(3000, () => {
   console.log("Server is listening...");
 });

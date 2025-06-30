@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/Ash4477/odin-basic-infosite/issues"
   },
-  "homepage": "https://github.com/Ash4477/odin-basic-infosite#readme"
+  "homepage": "https://github.com/Ash4477/odin-basic-infosite#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }
